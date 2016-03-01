@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/libs/UPPayAssistEx.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/libs/UPPayPluginEx.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/libs/alipaysdk.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/libs/alipaysecsdk.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/libs/alipayutdid.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/libs/android-support-v4.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/libs/libammsdk.jar" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/src/main/java/net" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/src/main/jniLibs/armeabi" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/src/main/jniLibs/armeabi-v7a" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/src/main/jniLibs/mips" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/jjdxmthirdpay/src/main/jniLibs/x86" charset="GBK" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

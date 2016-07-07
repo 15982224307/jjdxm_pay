@@ -8,14 +8,14 @@
 
  <!-- 微信支付 begin -->
         <activity
-            android:name="net.lbh.pay.PaymentActivity"
+            android:name="com.dou361.pay.PaymentActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity-alias
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:targetActivity="net.lbh.pay.PaymentActivity" />
+            android:targetActivity="com.dou361.pay.PaymentActivity" />
         <!-- 微信支付 end -->
 
 
@@ -41,7 +41,7 @@
 
 
         <!-- 微信 广播 start -->
-        <receiver android:name="net.lbh.pay.wxpay.AppRegister" >
+        <receiver android:name="com.dou361.pay.wxpay.AppRegister" >
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>

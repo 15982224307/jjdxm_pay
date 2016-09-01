@@ -7,7 +7,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 /**
  * Security information for Pay
- * <p>
+ * <p/>
  * alipay , wxpay
  *
  * @author BaoHong.Li
@@ -23,6 +23,7 @@ public class ConstantKeys {
 
     private static final String TAG = ConstantKeys.class.getName();
 
+    private static final String ALIPAY_APP_ID = "ALIPAY_APP_ID";
     private static final String ALIPAY_PARTNER_ID = "ALIPAY_PARTNER_ID";
     private static final String ALIPAY_SELLER_ID = "ALIPAY_SELLER_ID";
     private static final String ALIPAY_PRIVATE_KEY = "ALIPAY_PRIVATE_KEY";
@@ -49,7 +50,8 @@ public class ConstantKeys {
      */
     public static boolean initKeys(Activity activity) {
         if (!isInitAliPayKeys) {
-            initAliPayKeys(getMetaData(activity, ALIPAY_PARTNER_ID),
+            initAliPayKeys(getMetaData(activity, ALIPAY_APP_ID),
+                    getMetaData(activity, ALIPAY_PARTNER_ID),
                     getMetaData(activity, ALIPAY_SELLER_ID),
                     getMetaData(activity, ALIPAY_PRIVATE_KEY),
                     getMetaData(activity, ALIPAY_PUBLIC_KEY));
@@ -100,9 +102,9 @@ public class ConstantKeys {
      * @date 2015-7-17 上午9:51:55
      * @update (date)
      */
-    public static boolean initAliPayKeys(String partnerId, String sellerId,
+    public static boolean initAliPayKeys(String appId, String partnerId, String sellerId,
                                          String privateKey, String publicKey) {
-        AliPay.PARTNER_ID = partnerId;
+        AliPay.APP_ID = appId;
         AliPay.SELLER_ID = sellerId;
         AliPay.PRIVATE_KEY = privateKey;
         AliPay.ALIPAY_PUBLIC_KEY = publicKey;
@@ -154,6 +156,10 @@ public class ConstantKeys {
     public static class AliPay {
 
         /**
+         * 合作者身份创建的开发者APP ID parameter "partner" in pay interface
+         */
+        public static String APP_ID = "";
+        /**
          * 合作者身份 ID parameter "partner" in pay interface
          */
         public static String PARTNER_ID = "";
@@ -192,7 +198,7 @@ public class ConstantKeys {
     public static class WxPay {
         /**
          * appid 请同时修改 androidmanifest.xml里面，.PayActivityd里的属性
-         * <p>
+         * <p/>
          * <b><i> data android:scheme="wxb4ba3c02aa476ea1"<i><b> 为新设置的appid
          */
         public static String APP_ID = "";

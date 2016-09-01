@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/jjdxm-pay/jjdxm-pay.iml" filepath="$PROJECT_DIR$/jjdxm-pay/jjdxm-pay.iml" />
       <module fileurl="file://$PROJECT_DIR$/jjdxm_pay.iml" filepath="$PROJECT_DIR$/jjdxm_pay.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jjdxm-pay/library.iml" filepath="$PROJECT_DIR$/jjdxm-pay/library.iml" />
     </modules>
   </component>
 </project>

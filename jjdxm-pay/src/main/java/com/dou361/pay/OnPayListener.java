@@ -9,7 +9,6 @@ public abstract class OnPayListener {
     }
 
     public abstract void onPaySuccess();
-//	public abstract void onPaySuccess(String code, String msg);
 
     public abstract void onPayFail(String code, String msg);
 

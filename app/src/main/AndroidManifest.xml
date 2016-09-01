@@ -23,8 +23,6 @@
         </activity>
 
 
-
-
         <!--  ###############     放在 Main Activity 里  ######################### -->
         <intent-filter>
             <action android:name="android.intent.action.VIEW"/>
@@ -44,17 +42,6 @@
             android:exported="true"
             android:targetActivity="com.dou361.pay.PaymentActivity"/>
         <!-- 微信支付 end -->
-
-
-        <!-- 支付宝 begin -->
-        <activity
-            android:name="com.alipay.sdk.app.H5PayActivity"
-            android:configChanges="orientation|keyboardHidden|navigation"
-            android:exported="false"
-            android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"/>
-        <!-- 支付宝 end -->
-
 
         <!-- 银联支付 begin -->
         <!--<activity
@@ -92,22 +79,26 @@
         <!-- 微信支付 参数 end  需要替换成你自己的 -->
 
 
-        <!-- 支付宝 参数 appid， 需要替换成你自己的 -->
+        <!-- 支付宝 参数 appid， 需要替换成你自己的 -->//如果是 超过10位数字，要在前边加"\0" ,Eg: \0223987667567887653
+        <meta-data
+            android:name="ALIPAY_APP_ID"
+            android:value="替换成你自己的">
+        </meta-data>
         <meta-data
             android:name="ALIPAY_PARTNER_ID"
-            android:value="\02088511692735504">
+            android:value="替换成你自己的">
         </meta-data>
         <meta-data
             android:name="ALIPAY_SELLER_ID"
-            android:value="xxxx@163.com">
+            android:value="替换成你自己的">
         </meta-data>
         <meta-data
             android:name="ALIPAY_PRIVATE_KEY"
-            android:value="MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAOM5yeYxzGY2E2+6df7UEl0y+pOipHNBUEfJ4jHjCbWNH8RL+2dVEe8GN+tgJHD33Qu6VWhKvtG2dT+N9VyPepp+rBbp2QsQD34imY9O1vLVxrbVHAB9FMkXMavNwhpb5cY4r5diGv2euoo3/NwKi8X0KGCIRRD2bmLAQuOJtQVjAgMBAAECgYAf0yk3B4SEUFCalngOT++ehBRady4nQl+XHmyC5jSm6/QmDypQB7cyTiGo4tdXxy97hAaQS9+8CZ0UYLKb2zCljTj7fGxAX+XxxVl3zrt+XMwCede1YFj/ccaqDAQgRa1YNbr7O5KWCJFAufRd0DFNPgVdypg5ZnCIak6T/IUPsQJBAPsE+aT6cFIfWMyLOXEamDgDEgUJynV7dl0vxnc6AGhBEtD76ftvVGHxOK21BEkQt7wTMxAavetskTEaMplpK2sCQQDnu/TDBa8DfHfo1UTDn1+2RNlx4d88N2h1gdTApbZVxSrpGt7ViZAawL+IEyM83JoMnQ/LuPsIRplIPEobPsPpAkBgjixc+nxkCmzE2TTyPbGZsgynZXm8MQ55j9v+lo/7ijRrsMrzDYLe3cPYhY2tcUHLlXMJ2c9+FFfRFGusORkbAkEA006gsfTM0fD9pmJSgc8iB6JgZWgBl3cu2Xe5+LEiwrM3nbfS2gTGUp7QB9TrnOPL1RSjArF6tuEphKT1LkLdgQJAdPVPtzUS6itLeoHhUKhPydJ8Q8LnxJ6oIdSTXt1wZF/IUk9WPT2qdC6Jja0B7GD0tdZkf749IDkx+nzj+DsZ6A==">
+            android:value="MIICXQIBAAKBgQC1OoDgtrma4HfnmKm2ChPzAizTmTbqjv7OZwQsAJK60v0CQQkEAwzNxDB2onOJN0Vv">
         </meta-data>
         <meta-data
             android:name="ALIPAY_PUBLIC_KEY"
-            android:value="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCnxj/9qwVfgoUh/y2W89L6BkRAFljhNhgPdyPuBV64bfQNN1PjbCzkIM6qRdKBoLPXmKKMiFYnkd6rAoprih3/PrQEB/VsW8OoM8fxn67UDYuyBTqA23MML9q1+ilIZwBC2AQ2UBVOrFXfFl75p6/B5KsiNG9zpgmLCUYuLkxpLQIDAQAB">
+            android:value="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBB2v3nQ2vJ8BSqxPyQyua5xs5gfHw+3Xx0gtjtg34PwrACxcdFHn2bkgQIDAQAB">
         </meta-data>
         <!-- 支付宝 参数 end  需要替换成你自己的 -->
     </application>

@@ -41,7 +41,11 @@ public class PayAgent {
         /**
          * 银联支付
          */
-        UPPAY
+        UPPAY,
+        /**
+         * 支付宝授权
+         */
+        ALIAUTHV2
     }
 
     private static AlipayHelper mAlipayHelper;
@@ -133,8 +137,8 @@ public class PayAgent {
      * @date 2015-7-17 上午9:43:53
      * @update (date)
      */
-    public boolean initAliPayKeys(String partnerId, String sellerId, String privateKey, String publicKey) {
-        return ConstantKeys.initAliPayKeys(partnerId, sellerId, privateKey, publicKey);
+    public boolean initAliPayKeys(String appId, String partnerId, String sellerId, String privateKey, String publicKey) {
+        return ConstantKeys.initAliPayKeys(appId, partnerId, sellerId, privateKey, publicKey);
     }
 
     /**
@@ -231,7 +235,7 @@ public class PayAgent {
         switch (payType) {
 
             case ALIPAY:
-                getAlipayHelper().pay(activity, payInfo, listener);
+                getAlipayHelper().payV2(activity, payInfo, listener);
                 break;
 
             case WECHATPAY:
@@ -245,5 +249,32 @@ public class PayAgent {
                 throw new IllegalArgumentException(" payType is ALIPAY or WXPAY ");
         }
 
+    }
+
+    public void onAuth(PayType payType, Activity activity, OnAuthListener listener) {
+        currentPayType = payType;
+        currentPayType = payType;
+
+        if (!isInit) {
+            initPay(activity);
+//			throw new IllegalArgumentException(" please call initPay method !");
+        }
+        if (null == activity) {
+            throw new IllegalArgumentException(" Activity  is null!");
+        }
+
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            throw new IllegalArgumentException(Thread.currentThread().getName() + "'. " +
+                    "onPay methods must be called on the UI thread. ");
+        }
+        switch (payType) {
+
+            case ALIAUTHV2:
+                getAlipayHelper().authV2(activity, listener);
+                break;
+
+            default:
+                throw new IllegalArgumentException(" payType is ALIAUTHV2 ");
+        }
     }
 }

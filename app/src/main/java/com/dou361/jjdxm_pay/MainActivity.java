@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.dou361.pay.OnAuthListener;
 import com.dou361.pay.OnPayListener;
 import com.dou361.pay.PayAgent;
 import com.dou361.pay.PayInfo;
@@ -21,7 +22,7 @@ import java.net.URLConnection;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ProgressDialog progressDialog;
-    private Button aliPayBtn, wxPayBtn, upPayBtn;
+    private Button aliPayBtn, authV2Btn, wxPayBtn, upPayBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +41,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews() {
         progressDialog = new ProgressDialog(MainActivity.this);
 
-        aliPayBtn = (Button) findViewById(R.id.alipay);
+        aliPayBtn = (Button) findViewById(R.id.payV2);
+        authV2Btn = (Button) findViewById(R.id.authV2);
         wxPayBtn = (Button) findViewById(R.id.weichatpay);
         upPayBtn = (Button) findViewById(R.id.uppay);
 
         aliPayBtn.setOnClickListener(this);
+        authV2Btn.setOnClickListener(this);
         wxPayBtn.setOnClickListener(this);
         upPayBtn.setOnClickListener(this);
 
@@ -54,8 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.alipay:
-
+            case R.id.payV2:
                 PayInfo payInfo = new PayInfo();
                 payInfo.setSubject("测试商品");
                 payInfo.setPrice("20");
@@ -63,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 payInfo.setBody("商品描述；");
                 payInfo.setOrderNo("201507211420020069452");
                 testPay(PayAgent.PayType.ALIPAY, payInfo);
+                break;
+            case R.id.authV2:
+                testAuth(PayAgent.PayType.ALIAUTHV2);
                 break;
 
             case R.id.weichatpay:
@@ -188,6 +193,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onPayFail(String code, String msg) {
+                        Toast.makeText(MainActivity.this,
+                                "code:" + code + "msg:" + msg, Toast.LENGTH_LONG).show();
+                        Log.e(getClass().getName(), "code:" + code + "msg:" + msg);
+
+                        if (null != progressDialog) {
+                            progressDialog.dismiss();
+                        }
+                    }
+                });
+    }
+
+
+    /**
+     * 调起 支付宝授权平台
+     *
+     * @param payType
+     * @return void
+     * @autour BaoHong.Li
+     * @date 2015-7-21 下午2:39:21
+     * @update (date)
+     */
+    private void testAuth(PayAgent.PayType payType) {
+
+        PayAgent.getInstance().onAuth(payType, this,
+                new OnAuthListener() {
+
+                    @Override
+                    public void onStartAuth() {
+
+                        progressDialog.setTitle("加载中。。。");
+                        progressDialog.show();
+                    }
+
+                    @Override
+                    public void onAuthSuccess() {
+
+                        Toast.makeText(MainActivity.this, "授权成功！", Toast.LENGTH_LONG).show();
+
+                        if (null != progressDialog) {
+                            progressDialog.dismiss();
+                        }
+
+                    }
+
+                    @Override
+                    public void onAuthFail(String code, String msg) {
                         Toast.makeText(MainActivity.this,
                                 "code:" + code + "msg:" + msg, Toast.LENGTH_LONG).show();
                         Log.e(getClass().getName(), "code:" + code + "msg:" + msg);

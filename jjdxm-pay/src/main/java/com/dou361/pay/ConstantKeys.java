@@ -7,7 +7,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 
 /**
  * Security information for Pay
- * <p/>
+ * <p>
  * alipay , wxpay
  *
  * @author BaoHong.Li
@@ -52,9 +52,7 @@ public class ConstantKeys {
         if (!isInitAliPayKeys) {
             initAliPayKeys(getMetaData(activity, ALIPAY_APP_ID),
                     getMetaData(activity, ALIPAY_PARTNER_ID),
-                    getMetaData(activity, ALIPAY_SELLER_ID),
-                    getMetaData(activity, ALIPAY_PRIVATE_KEY),
-                    getMetaData(activity, ALIPAY_PUBLIC_KEY));
+                    getMetaData(activity, ALIPAY_PRIVATE_KEY));
         }
 
         if (!isInitWxPayKeys) {
@@ -93,21 +91,16 @@ public class ConstantKeys {
     /**
      * 初始化 支付宝 配置参数
      *
-     * @param partnerId
-     * @param sellerId
      * @param privateKey
-     * @param publicKey
      * @return boolean
      * @autour BaoHong.Li
      * @date 2015-7-17 上午9:51:55
      * @update (date)
      */
-    public static boolean initAliPayKeys(String appId, String partnerId, String sellerId,
-                                         String privateKey, String publicKey) {
+    public static boolean initAliPayKeys(String appId, String partnerId, String privateKey) {
         AliPay.APP_ID = appId;
-        AliPay.SELLER_ID = sellerId;
+        AliPay.PARTNER_ID = partnerId;
         AliPay.PRIVATE_KEY = privateKey;
-        AliPay.ALIPAY_PUBLIC_KEY = publicKey;
         isInitAliPayKeys = true;
         return true;
 
@@ -116,10 +109,7 @@ public class ConstantKeys {
     /**
      * 初始化 微信支付 配置参数
      *
-     * @param partnerId
      * @param mchId
-     * @param privateKey
-     * @param publicKey
      * @return boolean
      * @autour BaoHong.Li
      * @date 2015-7-17 上午9:58:46
@@ -165,11 +155,6 @@ public class ConstantKeys {
         public static String PARTNER_ID = "";
 
         /**
-         * 企业支付宝帐号 parameter "seller_id" in pay interface
-         */
-        public static String SELLER_ID = "";
-
-        /**
          * 参数编码字符集，目前只支持 utf-8 parameter "_input_charset" in pay interface
          */
         public static String INPUT_CHARSET = "utf-8";
@@ -184,7 +169,6 @@ public class ConstantKeys {
          */
         public static String PRIVATE_KEY = "";
 
-        public static String ALIPAY_PUBLIC_KEY = "";
     }
 
     /**
@@ -198,7 +182,7 @@ public class ConstantKeys {
     public static class WxPay {
         /**
          * appid 请同时修改 androidmanifest.xml里面，.PayActivityd里的属性
-         * <p/>
+         * <p>
          * <b><i> data android:scheme="wxb4ba3c02aa476ea1"<i><b> 为新设置的appid
          */
         public static String APP_ID = "";

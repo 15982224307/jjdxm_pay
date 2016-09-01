@@ -79,28 +79,25 @@
         <!-- 微信支付 参数 end  需要替换成你自己的 -->
 
 
-        <!-- 支付宝 参数 appid， 需要替换成你自己的 -->//如果是 超过10位数字，要在前边加"\0" ,Eg: \0223987667567887653
+        <!-- 支付宝 参数 appid， 需要替换成你自己的 -->  //如果是 超过10位数字，要在前边加"\0" ,Eg: \0223987667567887653
+        <!--//支付和授权使用
         <meta-data
             android:name="ALIPAY_APP_ID"
-            android:value="替换成你自己的">
+            android:value="替换成自己的 app id" >
         </meta-data>
+        //授权使用
         <meta-data
             android:name="ALIPAY_PARTNER_ID"
-            android:value="替换成你自己的">
+            android:value="替换成自己的 partenr id" >
         </meta-data>
-        <meta-data
-            android:name="ALIPAY_SELLER_ID"
-            android:value="替换成你自己的">
-        </meta-data>
+        //签名使用
         <meta-data
             android:name="ALIPAY_PRIVATE_KEY"
-            android:value="MIICXQIBAAKBgQC1OoDgtrma4HfnmKm2ChPzAizTmTbqjv7OZwQsAJK60v0CQQkEAwzNxDB2onOJN0Vv">
-        </meta-data>
-        <meta-data
-            android:name="ALIPAY_PUBLIC_KEY"
-            android:value="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBB2v3nQ2vJ8BSqxPyQyua5xs5gfHw+3Xx0gtjtg34PwrACxcdFHn2bkgQIDAQAB">
-        </meta-data>
+            android:value="替换成自己的 private key" >
+        </meta-data>-->
         <!-- 支付宝 参数 end  需要替换成你自己的 -->
+
+
     </application>
 
 </manifest>

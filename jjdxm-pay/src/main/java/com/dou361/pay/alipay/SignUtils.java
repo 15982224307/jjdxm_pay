@@ -38,7 +38,7 @@ public class SignUtils {
         try {
             PKCS8EncodedKeySpec priPKCS8 = new PKCS8EncodedKeySpec(
                     Base64.decode(ConstantKeys.AliPay.PRIVATE_KEY));
-            KeyFactory keyf = KeyFactory.getInstance(ALGORITHM);
+            KeyFactory keyf = KeyFactory.getInstance(ALGORITHM,"BC");
             PrivateKey priKey = keyf.generatePrivate(priPKCS8);
 
             java.security.Signature signature = java.security.Signature

@@ -137,8 +137,8 @@ public class PayAgent {
      * @date 2015-7-17 上午9:43:53
      * @update (date)
      */
-    public boolean initAliPayKeys(String appId, String partnerId, String sellerId, String privateKey, String publicKey) {
-        return ConstantKeys.initAliPayKeys(appId, partnerId, sellerId, privateKey, publicKey);
+    public boolean initAliPayKeys(String appId, String partnerId, String privateKey) {
+        return ConstantKeys.initAliPayKeys(appId, partnerId, privateKey);
     }
 
     /**

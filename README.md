@@ -45,7 +45,7 @@ or Gradle:
 	compile 'com.dou361.pay:jjdxm-pay:1.0.1'  支付宝2.0
 	compile 'com.dou361.pay:jjdxm-pay:1.0.0'
 
-jjdxm-pay requires at minimum Java 15 or Android 4.0.
+jjdxm-pay requires at minimum Java 9 or Android 2.3.
 
 
 [架包的打包引用以及冲突解决][jaraar]
@@ -63,14 +63,15 @@ jjdxm-pay requires at minimum Java 15 or Android 4.0.
 
 ## Get Started ##
 
-### 支付参数说明 ###：
+### 支付参数说明 ###
 PayType:
 支付的支付方式，目前支持：
 
 	PayAgent.PayType.WECHATPAY（微信支付）；
 	PayAgent.PayType.ALIPAY（支付宝）；
 
-支付使用的对象
+支付使用的对象，支付宝的以下参数都是需要传的，微信只有price和orderNo是必须传的。支付宝中价格price可以允许传小数点例如：0.01单位为元；微信中价格price不能有小数点，例如1单位为分。
+
 PayInfo：
 
 	/** 商品名称*/

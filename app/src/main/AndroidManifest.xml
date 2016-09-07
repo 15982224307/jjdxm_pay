@@ -22,81 +22,12 @@
             </intent-filter>
         </activity>
 
-
-        <!--  ###############     放在 Main Activity 里  ######################### -->
-        <intent-filter>
-            <action android:name="android.intent.action.VIEW"/>
-            <category android:name="android.intent.category.DEFAULT"/>
-            <data android:scheme="微信  appid"/>
-        </intent-filter>
-        <!--    ###################    放在 Main Activity 里  ############################-->
-
-        <!-- 微信支付 begin -->
+        <!-- 微信支付 start -->
         <activity
-            android:name="com.dou361.pay.PaymentActivity"
+            android:name=".wxapi.WXPayEntryActivity"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-
-        <activity-alias
-            android:name=".wxapi.WXPayEntryActivity"
-            android:exported="true"
-            android:targetActivity="com.dou361.pay.PaymentActivity"/>
         <!-- 微信支付 end -->
-
-        <!-- 银联支付 begin -->
-        <!--<activity
-            android:name="com.unionpay.uppay.PayActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize"/>-->
-
-        <!-- 银联支付 end -->
-
-
-        <!-- 微信 广播 start -->
-        <receiver android:name="com.dou361.pay.wxpay.AppRegister">
-            <intent-filter>
-                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP"/>
-            </intent-filter>
-        </receiver>
-        <!-- 微信 广播 end -->
-
-
-        <!-- 微信支付 参数 appid， 需要替换成你自己的 -->
-        <meta-data
-            android:name="WXPAY_APP_ID"
-            android:value="wxf2f565574a968187">
-        </meta-data>
-        <meta-data
-            android:name="WXPAY_MCH_ID"
-            android:value="1233848001">
-        </meta-data>
-        <meta-data
-            android:name="WXPAY_API_KEY"
-            android:value="412fde4e9c2e2bb619514ecea142e449">
-        </meta-data>
-        <!-- 微信支付 参数 end  需要替换成你自己的 -->
-
-
-        <!-- 支付宝 参数 appid， 需要替换成你自己的 -->  //如果是 超过10位数字，要在前边加"\0" ,Eg: \0223987667567887653
-        <!--//支付和授权使用
-        <meta-data
-            android:name="ALIPAY_APP_ID"
-            android:value="替换成自己的 app id" >
-        </meta-data>
-        //授权使用
-        <meta-data
-            android:name="ALIPAY_PARTNER_ID"
-            android:value="替换成自己的 partenr id" >
-        </meta-data>
-        //签名使用
-        <meta-data
-            android:name="ALIPAY_PRIVATE_KEY"
-            android:value="替换成自己的 private key" >
-        </meta-data>-->
-        <!-- 支付宝 参数 end  需要替换成你自己的 -->
-
 
     </application>
 

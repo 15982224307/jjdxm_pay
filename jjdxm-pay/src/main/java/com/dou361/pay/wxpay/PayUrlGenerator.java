@@ -36,17 +36,9 @@ public class PayUrlGenerator {
      * 构建支付参数
      *
      * @return PayReq
-     * @autour BaoHong.Li
-     * @date 2015-7-20 下午3:51:44
-     * @update (date)
      */
-    public PayReq genPayReq() {
-
+    public PayReq genSignPayReq() {
         validatePayInfo(this.payInfo);
-        L.d(TAG, "APP_ID:" + ConstantKeys.WxPay.APP_ID);
-        L.d(TAG, "MCH_ID:" + ConstantKeys.WxPay.MCH_ID);
-        L.d(TAG, "API_KEY:" + ConstantKeys.WxPay.API_KEY);
-
         req.appId = ConstantKeys.WxPay.APP_ID;
         req.partnerId = ConstantKeys.WxPay.MCH_ID;
         req.prepayId = this.payInfo.getOrderNo();

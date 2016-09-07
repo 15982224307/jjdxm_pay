@@ -47,7 +47,9 @@
 -keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
 -keep class com.alipay.sdk.app.PayTask{ public *;}
 -keep class com.alipay.sdk.app.AuthTask{ public *;}
-
+-keep class com.tencent.mm.sdk.** {
+   *;
+}
 
 -keepclasseswithmembernames class * {
     native <methods>;

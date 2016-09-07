@@ -4,16 +4,10 @@ import android.app.Activity;
 import android.os.Looper;
 
 import com.dou361.pay.alipay.AlipayHelper;
-import com.dou361.pay.uppay.UpPayHelper;
 import com.dou361.pay.wxpay.WechatPayHelper;
 
 /**
  * 支付代理类
- *
- * @author BaoHong.Li
- * @version V1.0
- * @date 2015-7-16 上午11:23:48
- * @update (date)
  */
 public class PayAgent {
 
@@ -39,10 +33,6 @@ public class PayAgent {
          */
         WECHATPAY,
         /**
-         * 银联支付
-         */
-        UPPAY,
-        /**
          * 支付宝授权
          */
         ALIAUTHV2
@@ -50,7 +40,6 @@ public class PayAgent {
 
     private static AlipayHelper mAlipayHelper;
     private static WechatPayHelper mWechatpayHelper;
-    private static UpPayHelper mUpPayHelper;
 
 
     private PayAgent() {
@@ -61,15 +50,12 @@ public class PayAgent {
     public static PayAgent getInstance() {
 
         if (null == instance) {
-
             synchronized (PayAgent.class) {
-
                 if (null == instance) {
                     instance = new PayAgent();
                 }
             }
         }
-
         return instance;
     }
 
@@ -87,21 +73,8 @@ public class PayAgent {
         return mWechatpayHelper;
     }
 
-    public UpPayHelper getUpPayHelper() {
-        if (null == mUpPayHelper) {
-            mUpPayHelper = new UpPayHelper();
-        }
-        return mUpPayHelper;
-    }
-
     /***
      * set debug modle
-     *
-     * @param debug [true or false]
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-16 上午11:26:07
-     * @update (date)
      */
     public void setDebug(boolean debug) {
         L.isDebug = debug;
@@ -109,45 +82,34 @@ public class PayAgent {
 
     /**
      * 初始化 支付组件
-     *
-     * @param activity
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-16 下午5:04:36
-     * @update (date)
      */
-    public synchronized boolean initPay(Activity activity) {
+    public synchronized boolean init(Activity activity) {
         if (isInit) {
             return true;
         }
-
         boolean success = true;
-        success &= ConstantKeys.initKeys(activity);
         success &= getWechatpayHelper().registerWechatApi(activity);
-
         isInit = true;
         return success;
     }
 
     /**
-     * 初始化支付宝 所需的appid ,appkey ..
-     *
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-17 上午9:43:53
-     * @update (date)
+     * 初始化所有
+     */
+    public boolean initPay(String appId, String partnerId, String privateKey, String appwxId, String mchId,
+                           String appKey) {
+        return ConstantKeys.initKeys(appId, partnerId, privateKey, appwxId, mchId, appKey);
+    }
+
+    /**
+     * 初始化支付宝 所需的appid ,appkey
      */
     public boolean initAliPayKeys(String appId, String partnerId, String privateKey) {
         return ConstantKeys.initAliPayKeys(appId, partnerId, privateKey);
     }
 
     /**
-     * 初始化微信支付 所需的appid ,appkey ..
-     *
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-17 上午9:43:53
-     * @update (date)
+     * 初始化微信支付 所需的appid ,appkey .
      */
     public boolean initWxPayKeys(String appId, String mchId, String appKey) {
         return ConstantKeys.initWxPayKeys(appId, mchId, appKey);
@@ -155,13 +117,6 @@ public class PayAgent {
 
     /**
      * 支付宝 支付  <b>[ 同步调用 <i>即在主（ui）线程调用</i>]</b>
-     *
-     * @param activity : 调起支付 所在的 activity
-     * @param payInfo  : 支付信息 [订单号，支付金额，商品名称，支付服务器回调地址..]
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-16 下午2:40:23
-     * @update (date)
      */
     public void payOfAliPay(Activity activity, PayInfo payInfo, OnPayListener listener) {
         onPay(PayType.ALIPAY, activity, payInfo, listener);
@@ -169,31 +124,9 @@ public class PayAgent {
 
     /**
      * 微信支付 <b>[ 同步调用<i> 即在主（ui）线程调用</i>]</b>
-     *
-     * @param activity: 调起支付 所在的 activity
-     * @param payInfo:  支付信息 [订单号，支付金额，商品名称，支付服务器回调地址..]
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-16 下午2:40:38
-     * @update (date)
      */
     public void payOfWechatPay(Activity activity, PayInfo payInfo, OnPayListener listener) {
         onPay(PayType.WECHATPAY, activity, payInfo, listener);
-    }
-
-    /**
-     * 银联支付<b>[ 同步调用<i> 即在主（ui）线程调用</i>]</b>
-     *
-     * @param activity
-     * @param payInfo  【orderNo,tn 银行流水号】
-     * @param listener
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-21 下午2:27:29
-     * @update (date)
-     */
-    public void payOfUpPay(Activity activity, PayInfo payInfo, OnPayListener listener) {
-        onPay(PayType.UPPAY, activity, payInfo, listener);
     }
 
     /**
@@ -204,46 +137,66 @@ public class PayAgent {
      * @param payInfo  支付信息 [订单号，支付金额，商品名称，支付服务器回调地址..]
      *                 <p><i>PayInfo -> price 微信:交易金额默认为人民币交易，接口中参数支付金额单位为【分】，参数值不能带小数。</i></p>
      * @param listener 支付回调
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-16 下午3:51:55
-     * @update (date)
      */
     public void onPay(PayType payType, Activity activity, PayInfo payInfo, OnPayListener listener) {
-
         currentPayType = payType;
-
         if (!isInit) {
-            initPay(activity);
-//			throw new IllegalArgumentException(" please call initPay method !");
+            init(activity);
         }
-
         if (null == payInfo) {
             throw new IllegalArgumentException(" payinfo  is null!");
         }
-
         if (null == activity) {
             throw new IllegalArgumentException(" Activity  is null!");
         }
-
         if (Looper.myLooper() != Looper.getMainLooper()) {
             throw new IllegalArgumentException(Thread.currentThread().getName() + "'. " +
                     "onPay methods must be called on the UI thread. ");
         }
-
-
         switch (payType) {
+            case ALIPAY:
+                getAlipayHelper().signAndPayV2(activity, payInfo, listener);
+                break;
+            case WECHATPAY:
+                getWechatpayHelper().signPay(activity, payInfo, listener);
+                break;
+            default:
+                throw new IllegalArgumentException(" payType is ALIPAY or WXPAY ");
+        }
 
+    }
+
+
+    /**
+     * 调起 支付 <b>[ 同步调用<i>即在主（ui）线程调用</i>]</b>
+     *
+     * @param payType
+     * @param activity 调起支付 所在的 activity
+     * @param payInfo  支付信息 [订单号，支付金额，商品名称，支付服务器回调地址..]
+     *                 <p><i>PayInfo -> price 微信:交易金额默认为人民币交易，接口中参数支付金额单位为【分】，参数值不能带小数。</i></p>
+     * @param listener 支付回调
+     */
+    public void onPay(PayType payType, Activity activity, String payInfo, OnPayListener listener) {
+        currentPayType = payType;
+        if (!isInit) {
+            init(activity);
+        }
+        if (null == payInfo) {
+            throw new IllegalArgumentException(" payinfo  is null!");
+        }
+        if (null == activity) {
+            throw new IllegalArgumentException(" Activity  is null!");
+        }
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            throw new IllegalArgumentException(Thread.currentThread().getName() + "'. " +
+                    "onPay methods must be called on the UI thread. ");
+        }
+        switch (payType) {
             case ALIPAY:
                 getAlipayHelper().payV2(activity, payInfo, listener);
                 break;
-
             case WECHATPAY:
                 getWechatpayHelper().pay(activity, payInfo, listener);
-                break;
-
-            case UPPAY:
-                getUpPayHelper().pay(activity, payInfo, listener);
                 break;
             default:
                 throw new IllegalArgumentException(" payType is ALIPAY or WXPAY ");
@@ -256,8 +209,7 @@ public class PayAgent {
         currentPayType = payType;
 
         if (!isInit) {
-            initPay(activity);
-//			throw new IllegalArgumentException(" please call initPay method !");
+            init(activity);
         }
         if (null == activity) {
             throw new IllegalArgumentException(" Activity  is null!");
@@ -268,7 +220,6 @@ public class PayAgent {
                     "onPay methods must be called on the UI thread. ");
         }
         switch (payType) {
-
             case ALIAUTHV2:
                 getAlipayHelper().authV2(activity, listener);
                 break;

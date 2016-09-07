@@ -96,12 +96,11 @@ public class AlipayHelper {
 
     };
 
-    public void payV2(final Activity activity, PayInfo info,
-                      OnPayListener l) {
+    public void signAndPayV2(final Activity activity, PayInfo info,
+                              OnPayListener l) {
 
         this.activity = activity;
         this.onPayResultListener = l;
-
         /**
          * 这里只是为了方便直接向商户展示支付宝的整个支付流程；所以Demo中加签过程直接放在客户端完成；
          * 真实App里，privateKey等数据严禁放在客户端，加签过程务必要放在服务端完成；
@@ -111,6 +110,40 @@ public class AlipayHelper {
          */
         OrderInfoUtil2_0 generator = new OrderInfoUtil2_0(info);
         payInfo = generator.generatePayInfo();
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+
+                activity.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if (null != onPayResultListener) {
+                            onPayResultListener.onStartPay();
+                        }
+                    }
+                });
+
+                PayTask aliPay = new PayTask(activity);
+                // 设置为沙箱模式，不设置默认为线上环境?
+                // aliPay.setSandBox(true);
+
+                Map<String, String> result = aliPay.payV2(payInfo, true);
+                L.i(AlipayHelper.class.getName(), "pay result :" + result.toString());
+                Message msg = new Message();
+                msg.what = RQF_PAY;
+                msg.obj = result;
+                handler.sendMessage(msg);
+            }
+        }).start();
+    }
+
+    public void payV2(final Activity activity, final String info,
+                      OnPayListener l) {
+
+        this.activity = activity;
+        this.onPayResultListener = l;
 
         new Thread(new Runnable() {
 
@@ -128,10 +161,10 @@ public class AlipayHelper {
                 });
 
                 PayTask aliPay = new PayTask(activity);
-                // 设置为沙箱模式，不设置默认为线上环境�?
+                // 设置为沙箱模式，不设置默认为线上环境?
                 // aliPay.setSandBox(true);
 
-                Map<String, String> result = aliPay.payV2(payInfo, true);
+                Map<String, String> result = aliPay.payV2(info, true);
                 L.i(AlipayHelper.class.getName(), "pay result :" + result.toString());
                 Message msg = new Message();
                 msg.what = RQF_PAY;

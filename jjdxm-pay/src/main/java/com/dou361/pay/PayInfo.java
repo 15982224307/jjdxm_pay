@@ -33,6 +33,8 @@ public final class PayInfo implements Serializable {
      * 支付通知地址
      */
     private String notifyUrl;
+    private String noncestr;
+    private int timestamp;
 
 
     public String getBody() {
@@ -81,5 +83,19 @@ public final class PayInfo implements Serializable {
         this.notifyUrl = notifyUrl;
     }
 
+    public String getNoncestr() {
+        return noncestr;
+    }
 
+    public void setNoncestr(String noncestr) {
+        this.noncestr = noncestr;
+    }
+
+    public int getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(int timestamp) {
+        this.timestamp = timestamp;
+    }
 }

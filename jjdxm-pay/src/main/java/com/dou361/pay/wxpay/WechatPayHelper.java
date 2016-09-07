@@ -15,6 +15,8 @@ import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
+import org.json.JSONObject;
+
 public class WechatPayHelper {
 
     private static final String TAG = WechatPayHelper.class.getName();
@@ -23,16 +25,14 @@ public class WechatPayHelper {
 
     private IWXAPI msgApi;
 
-    public void pay(final Activity activity, PayInfo info, OnPayListener listener) {
+    public void signPay(final Activity activity, PayInfo info, OnPayListener listener) {
 
         mListener = listener;
         if (null == msgApi) {
             registerWechatApi(activity);
         }
-
         PayUrlGenerator payUrlGenerator = new PayUrlGenerator(info);
-        PayReq req = payUrlGenerator.genPayReq();
-
+        PayReq req = payUrlGenerator.genSignPayReq();
         if (null != mListener) {
             mListener.onStartPay();
         }
@@ -40,14 +40,36 @@ public class WechatPayHelper {
         msgApi.sendReq(req);
     }
 
+    public void pay(final Activity activity, String data, OnPayListener listener) {
+        mListener = listener;
+        if (null == msgApi) {
+            registerWechatApi(activity);
+        }
+        PayReq req = new PayReq();
+        try {
+            JSONObject json = new JSONObject(data);
+            if (null != json && !json.has("retcode")) {
+                req.appId = json.getString("appid");
+                req.partnerId = json.getString("partnerid");
+                req.prepayId = json.getString("prepayid");
+                req.nonceStr = json.getString("noncestr");
+                req.timeStamp = json.getString("timestamp");
+                req.packageValue = json.getString("package");
+                req.sign = json.getString("sign");
+                req.extData = "app data";
+            } else {
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (null != mListener) {
+            mListener.onStartPay();
+        }
+        msgApi.sendReq(req);
+    }
+
     /**
      * 注册 微信sdk 到app
-     *
-     * @param activity
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-17 上午9:05:13
-     * @update (date)
      */
     public boolean registerWechatApi(final Activity activity) {
         if (null == msgApi) {
@@ -58,25 +80,13 @@ public class WechatPayHelper {
 
     /**
      * 接收 支付回调
-     *
-     * @param resp
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-16 下午4:02:28
-     * @update (date)
      */
     public static void handleOnResp(BaseResp resp) {
-
         L.d(TAG, " ====  handleOnResp ,resp:" + resp.toString() + " === ");
-
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX && resp.errCode == 0) {
-
             if (null != mListener) {
-//				mListener.onPaySuccess(String.valueOf(resp.errCode), resp.errStr);
                 mListener.onPaySuccess();
             }
-
-            //支付失败
         } else {
             if (null != mListener) {
                 mListener.onPayFail(String.valueOf(resp.errCode), resp.errStr);
@@ -85,13 +95,6 @@ public class WechatPayHelper {
 
     }
 
-    /**
-     * @param resp
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-16 下午4:02:41
-     * @update (date)
-     */
     public static void handleonReq(BaseReq req) {
         L.d(TAG, " ====== handleonReq =====");
     }

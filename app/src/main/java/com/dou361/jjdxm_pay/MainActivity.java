@@ -1,7 +1,5 @@
 package com.dou361.jjdxm_pay;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,20 +7,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.dou361.jjdxm_pay.module.ApiServiceUtils;
+import com.dou361.pay.L;
 import com.dou361.pay.OnAuthListener;
 import com.dou361.pay.OnPayListener;
 import com.dou361.pay.PayAgent;
 import com.dou361.pay.PayInfo;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ProgressDialog progressDialog;
-    private Button aliPayBtn, authV2Btn, wxPayBtn, upPayBtn;
+    private Button aliPayBtn, authV2Btn, wxPayBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +30,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 初始化支付组件
         PayAgent payAgent = PayAgent.getInstance();
         payAgent.setDebug(true);
-        payAgent.initPay(this);
-
+        payAgent.init(this);
+        payAgent.initPay("2015121801006488", "2088311071300602", "MIICXQIBAAKBgQC1OoDgtrma4HfnmKm2ChPzAizThnGnUfNEnKkZWdQF8pyrZB8Khge2YZhH0GwwaoNp0OhR6QCZPr0cG2y1wZayVJE+FAEB2v3nQ2vJ8BSqxPyQyuE6pKGAPJh/0w5Z07XcTsJqKa5xs5gfHw+3Xx0gtjtg34PwrACxcdFHn2bkgQIDAQABAoGATVkJ1l7Ger6hDlyO2l4Uw5vDDAiOi24jmL4QQfyfzGYOzeuuf+xScFnZB5WCB2v+aHQ8I3GByuYHCm7+B9j2+q7ydGfX7qWQYsu17lOSJ1qldtcLkkdDmvf0HoHzNBzpurPuRZdBY/BtEYGpuGMisDJtmTbqjv7OZwQsAJK60v0CQQDtrPTJhN3L+qRAUniubeW6OM9CYAgxlWDLT3+vljpBjWXLC0U1vfiSCLnqWe1L18gNvS9JpVyRsSt/TmivtpIjAkEAwzNxDhzvCzR/f78/uaJZjLhpa0SyeUpR6Zww6STfgz2+4pkQo5dWN3PUQO+A51bHSmGflShbN7j8uvAklog/CwJBAL03l74jkCyHg2JOBhPgHCdQePi/2WYYJXJW/TF96S0s8+BdPaFWd2FTnyeKpldeF7+QYOhBxNuccCOu+bsCH38CQFXj+7oPByvyBKwMVhjzk920g0Zc6v8tsY9OV8Muo17XO3fvi/+/poMt51ZPTHP+niBfhl2WbVS+hA4pfp/yAXMCQQDjDH4avrljPvn/aVfccVi65GNsMNIxY1BVX0e6uH6KPpi9WH9xgZVUA6JVgS3WSLjz3ogrZLpvmV22onOJN0Vv", "wxd930ea5d5a258f4f", "1305176001", "fd48464480a242ab98586b7e6738277d");
         initViews();
 
     }
 
     private void initViews() {
-        progressDialog = new ProgressDialog(MainActivity.this);
-
         aliPayBtn = (Button) findViewById(R.id.payV2);
         authV2Btn = (Button) findViewById(R.id.authV2);
         wxPayBtn = (Button) findViewById(R.id.weichatpay);
-        upPayBtn = (Button) findViewById(R.id.uppay);
-
         aliPayBtn.setOnClickListener(this);
         authV2Btn.setOnClickListener(this);
         wxPayBtn.setOnClickListener(this);
-        upPayBtn.setOnClickListener(this);
 
     }
 
@@ -64,142 +57,87 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 payInfo.setNotifyUrl("www.cs.not");
                 payInfo.setBody("商品描述；");
                 payInfo.setOrderNo("201507211420020069452");
-                testPay(PayAgent.PayType.ALIPAY, payInfo);
+                aliPay(payInfo);
                 break;
             case R.id.authV2:
                 testAuth(PayAgent.PayType.ALIAUTHV2);
                 break;
-
             case R.id.weichatpay:
-                PayInfo info = new PayInfo();
-                info.setOrderNo("201507211420020069452");
-                testPay(PayAgent.PayType.WECHATPAY, info);
+                winchatPay();
                 break;
-
-            case R.id.uppay:
-
-                requestTestOrderNo();
-
-                break;
-
             default:
                 break;
         }
 
     }
 
-    /**
-     * 获取 测试 订单号 ，银联支付
-     *
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-21 下午3:09:11
-     * @update (date)
-     */
-    private void requestTestOrderNo() {
-
-        new AsyncTask<String, Integer, String>() {
-
+    private void winchatPay() {
+        ApiServiceUtils.getWinChatBean(new Callback<String>() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progressDialog.setTitle("获取订单中...");
-                progressDialog.show();
-            }
-
-            @Override
-            protected String doInBackground(String... params) {
-
-                String tn = null;
-                InputStream is;
-                try {
-
-                    String url = "http://202.101.25.178:8080/sim/gettn";
-
-                    URL myURL = new URL(url);
-                    URLConnection ucon = myURL.openConnection();
-                    ucon.setConnectTimeout(120000);
-                    is = ucon.getInputStream();
-                    int i = -1;
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    while ((i = is.read()) != -1) {
-                        baos.write(i);
-                    }
-
-                    tn = baos.toString();
-                    is.close();
-                    baos.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
+            public void onResponse(Call<String> call, Response<String> response) {
+                String body = response.body();
+                L.e("pay", body);
+                if (body != null) {
+                    wxPay(body);
                 }
-
-                Log.i(getClass().getName(), "response :" + tn);
-
-                return tn;
             }
-
 
             @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
+            public void onFailure(Call<String> call, Throwable t) {
 
-                progressDialog.dismiss();
-
-                // 获取到订单后 调起 支付
-                PayInfo inf = new PayInfo();
-                inf.setOrderNo(result);
-                testPay(PayAgent.PayType.UPPAY, inf);
             }
-
-
-        }.execute();
-
-
+        });
     }
 
-    /**
-     * 调起 支付平台
-     *
-     * @param payType
-     * @param payInfo
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-21 下午2:39:21
-     * @update (date)
-     */
-    private void testPay(PayAgent.PayType payType, PayInfo payInfo) {
-
-        PayAgent.getInstance().onPay(payType, this, payInfo,
+    private void wxPay(String sign) {
+        PayAgent.getInstance().onPay(PayAgent.PayType.WECHATPAY, this, sign,
                 new OnPayListener() {
 
                     @Override
                     public void onStartPay() {
-
-                        progressDialog.setTitle("加载中。。。");
-                        progressDialog.show();
+                        Log.e("pay", "------onStartPay------");
                     }
 
                     @Override
                     public void onPaySuccess() {
-//						public void onPaySuccess(String code, String msg) {
-
                         Toast.makeText(MainActivity.this, "支付成功！", Toast.LENGTH_LONG).show();
-
-                        if (null != progressDialog) {
-                            progressDialog.dismiss();
-                        }
-
+                        Log.e("pay", "------onPaySuccess------");
                     }
 
                     @Override
                     public void onPayFail(String code, String msg) {
                         Toast.makeText(MainActivity.this,
                                 "code:" + code + "msg:" + msg, Toast.LENGTH_LONG).show();
-                        Log.e(getClass().getName(), "code:" + code + "msg:" + msg);
+                        Log.e("pay", "code:" + code + "msg:" + msg);
 
-                        if (null != progressDialog) {
-                            progressDialog.dismiss();
-                        }
+                    }
+                });
+    }
+
+    /**
+     * 调起 支付平台
+     */
+    private void aliPay(PayInfo payInfo) {
+        PayAgent.getInstance().onPay(PayAgent.PayType.ALIPAY, this, payInfo,
+                new OnPayListener() {
+
+                    @Override
+                    public void onStartPay() {
+                        Log.e("pay", "------onStartPay------");
+                    }
+
+                    @Override
+                    public void onPaySuccess() {
+                        Toast.makeText(MainActivity.this, "支付成功！", Toast.LENGTH_LONG).show();
+                        Log.e("pay", "------onPaySuccess------");
+                    }
+
+                    @Override
+                    public void onPayFail(String code, String msg) {
+                        Toast.makeText(MainActivity.this,
+                                "code:" + code + "msg:" + msg, Toast.LENGTH_LONG).show();
+                        Log.e("pay", "code:" + code + "msg:" + msg);
+
                     }
                 });
     }
@@ -207,12 +145,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 调起 支付宝授权平台
-     *
-     * @param payType
-     * @return void
-     * @autour BaoHong.Li
-     * @date 2015-7-21 下午2:39:21
-     * @update (date)
      */
     private void testAuth(PayAgent.PayType payType) {
 
@@ -221,19 +153,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     @Override
                     public void onStartAuth() {
-
-                        progressDialog.setTitle("加载中。。。");
-                        progressDialog.show();
+                        Log.e("pay", "------onStartAuth------");
                     }
 
                     @Override
                     public void onAuthSuccess() {
-
                         Toast.makeText(MainActivity.this, "授权成功！", Toast.LENGTH_LONG).show();
-
-                        if (null != progressDialog) {
-                            progressDialog.dismiss();
-                        }
+                        Log.e("pay", "------onAuthSuccess------");
 
                     }
 
@@ -241,12 +167,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public void onAuthFail(String code, String msg) {
                         Toast.makeText(MainActivity.this,
                                 "code:" + code + "msg:" + msg, Toast.LENGTH_LONG).show();
-                        Log.e(getClass().getName(), "code:" + code + "msg:" + msg);
+                        Log.e("pay", "code:" + code + "msg:" + msg);
 
-                        if (null != progressDialog) {
-                            progressDialog.dismiss();
-                        }
                     }
                 });
     }
+
 }

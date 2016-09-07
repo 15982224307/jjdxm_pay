@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         // 初始化支付组件
-        PayAgent payAgent = PayAgent.getInstance();
-        payAgent.setDebug(true);
-        payAgent.init(this);
-        payAgent.initPay("2015121801006488", "2088311071300602", "MIICXQIBAAKBgQC1OoDgtrma4HfnmKm2ChPzAizThnGnUfNEnKkZWdQF8pyrZB8Khge2YZhH0GwwaoNp0OhR6QCZPr0cG2y1wZayVJE+FAEB2v3nQ2vJ8BSqxPyQyuE6pKGAPJh/0w5Z07XcTsJqKa5xs5gfHw+3Xx0gtjtg34PwrACxcdFHn2bkgQIDAQABAoGATVkJ1l7Ger6hDlyO2l4Uw5vDDAiOi24jmL4QQfyfzGYOzeuuf+xScFnZB5WCB2v+aHQ8I3GByuYHCm7+B9j2+q7ydGfX7qWQYsu17lOSJ1qldtcLkkdDmvf0HoHzNBzpurPuRZdBY/BtEYGpuGMisDJtmTbqjv7OZwQsAJK60v0CQQDtrPTJhN3L+qRAUniubeW6OM9CYAgxlWDLT3+vljpBjWXLC0U1vfiSCLnqWe1L18gNvS9JpVyRsSt/TmivtpIjAkEAwzNxDhzvCzR/f78/uaJZjLhpa0SyeUpR6Zww6STfgz2+4pkQo5dWN3PUQO+A51bHSmGflShbN7j8uvAklog/CwJBAL03l74jkCyHg2JOBhPgHCdQePi/2WYYJXJW/TF96S0s8+BdPaFWd2FTnyeKpldeF7+QYOhBxNuccCOu+bsCH38CQFXj+7oPByvyBKwMVhjzk920g0Zc6v8tsY9OV8Muo17XO3fvi/+/poMt51ZPTHP+niBfhl2WbVS+hA4pfp/yAXMCQQDjDH4avrljPvn/aVfccVi65GNsMNIxY1BVX0e6uH6KPpi9WH9xgZVUA6JVgS3WSLjz3ogrZLpvmV22onOJN0Vv", "wxd930ea5d5a258f4f", "1305176001", "fd48464480a242ab98586b7e6738277d");
+        PayAgent.getInstance()
+                .init(this)
+                .setDebug(true)
+                .initPay("2015121801006488", "2088311071300602", "MIICXQIBAAKBgQC1OoDgtrma4HfnmKm2ChPzAizThnGnUfNEnKkZWdQF8pyrZB8Khge2YZhH0GwwaoNp0OhR6QCZPr0cG2y1wZayVJE+FAEB2v3nQ2vJ8BSqxPyQyuE6pKGAPJh/0w5Z07XcTsJqKa5xs5gfHw+3Xx0gtjtg34PwrACxcdFHn2bkgQIDAQABAoGATVkJ1l7Ger6hDlyO2l4Uw5vDDAiOi24jmL4QQfyfzGYOzeuuf+xScFnZB5WCB2v+aHQ8I3GByuYHCm7+B9j2+q7ydGfX7qWQYsu17lOSJ1qldtcLkkdDmvf0HoHzNBzpurPuRZdBY/BtEYGpuGMisDJtmTbqjv7OZwQsAJK60v0CQQDtrPTJhN3L+qRAUniubeW6OM9CYAgxlWDLT3+vljpBjWXLC0U1vfiSCLnqWe1L18gNvS9JpVyRsSt/TmivtpIjAkEAwzNxDhzvCzR/f78/uaJZjLhpa0SyeUpR6Zww6STfgz2+4pkQo5dWN3PUQO+A51bHSmGflShbN7j8uvAklog/CwJBAL03l74jkCyHg2JOBhPgHCdQePi/2WYYJXJW/TF96S0s8+BdPaFWd2FTnyeKpldeF7+QYOhBxNuccCOu+bsCH38CQFXj+7oPByvyBKwMVhjzk920g0Zc6v8tsY9OV8Muo17XO3fvi/+/poMt51ZPTHP+niBfhl2WbVS+hA4pfp/yAXMCQQDjDH4avrljPvn/aVfccVi65GNsMNIxY1BVX0e6uH6KPpi9WH9xgZVUA6JVgS3WSLjz3ogrZLpvmV22onOJN0Vv", "wxd930ea5d5a258f4f", "1305176001", "fd48464480a242ab98586b7e6738277d");
         initViews();
 
     }
@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         aliPayBtn.setOnClickListener(this);
         authV2Btn.setOnClickListener(this);
         wxPayBtn.setOnClickListener(this);
-
     }
 
     @Override

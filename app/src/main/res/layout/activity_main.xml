@@ -13,12 +13,6 @@
         android:text="微信 支付"/>
 
     <Button
-        android:id="@+id/uppay"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="银联 支付"/>
-
-    <Button
         android:id="@+id/payV2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

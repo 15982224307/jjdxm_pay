@@ -11,12 +11,7 @@ import com.dou361.pay.wxpay.WechatPayHelper;
  */
 public class PayAgent {
 
-    public static PayType currentPayType;
-
-    private boolean isInit;
-
     private static volatile PayAgent instance;
-
 
     private static final String TAG = PayAgent.class.getName();
 
@@ -76,73 +71,76 @@ public class PayAgent {
     /***
      * set debug modle
      */
-    public void setDebug(boolean debug) {
+    public PayAgent setDebug(boolean debug) {
         L.isDebug = debug;
+        return instance;
     }
 
     /**
      * 初始化 支付组件
      */
-    public synchronized boolean init(Activity activity) {
-        if (isInit) {
-            return true;
-        }
-        boolean success = true;
-        success &= getWechatpayHelper().registerWechatApi(activity);
-        isInit = true;
-        return success;
+    public synchronized PayAgent init(Activity activity) {
+        getWechatpayHelper().registerWechatApi(activity);
+        return instance;
     }
 
-    /**
+    /***
      * 初始化所有
+     * @param appId 必填：支付宝app_id
+     * @param partnerId 必填：支付宝商户id
+     * @param privateKey 可填：支付宝私有key，订单加签使用，如果使用服务器签好名的字符串可不传该参数
+     * @param appwxId 必填：微信app_id
+     * @param mchId 必填：微信商户id
+     * @param appKey 可填：微信key，订单加签使用，如果使用服务器签好名的字符串可不传该参数
+     * @return
      */
-    public boolean initPay(String appId, String partnerId, String privateKey, String appwxId, String mchId,
-                           String appKey) {
-        return ConstantKeys.initKeys(appId, partnerId, privateKey, appwxId, mchId, appKey);
+    public PayAgent initPay(String appId, String partnerId, String privateKey, String appwxId, String mchId,
+                            String appKey) {
+        ConstantKeys.initKeys(appId, partnerId, privateKey, appwxId, mchId, appKey);
+        return instance;
     }
 
     /**
      * 初始化支付宝 所需的appid ,appkey
      */
-    public boolean initAliPayKeys(String appId, String partnerId, String privateKey) {
-        return ConstantKeys.initAliPayKeys(appId, partnerId, privateKey);
+    public PayAgent initAliPayKeys(String appId, String partnerId, String privateKey) {
+        ConstantKeys.initAliPayKeys(appId, partnerId, privateKey);
+        return instance;
     }
 
     /**
      * 初始化微信支付 所需的appid ,appkey .
      */
-    public boolean initWxPayKeys(String appId, String mchId, String appKey) {
-        return ConstantKeys.initWxPayKeys(appId, mchId, appKey);
+    public PayAgent initWxPayKeys(String appId, String mchId, String appKey) {
+        ConstantKeys.initWxPayKeys(appId, mchId, appKey);
+        return instance;
     }
 
     /**
      * 支付宝 支付  <b>[ 同步调用 <i>即在主（ui）线程调用</i>]</b>
      */
-    public void payOfAliPay(Activity activity, PayInfo payInfo, OnPayListener listener) {
+    public PayAgent payOfAliPay(Activity activity, PayInfo payInfo, OnPayListener listener) {
         onPay(PayType.ALIPAY, activity, payInfo, listener);
+        return instance;
     }
 
     /**
      * 微信支付 <b>[ 同步调用<i> 即在主（ui）线程调用</i>]</b>
      */
-    public void payOfWechatPay(Activity activity, PayInfo payInfo, OnPayListener listener) {
+    public PayAgent payOfWechatPay(Activity activity, PayInfo payInfo, OnPayListener listener) {
         onPay(PayType.WECHATPAY, activity, payInfo, listener);
+        return instance;
     }
 
-    /**
-     * 调起 支付 <b>[ 同步调用<i>即在主（ui）线程调用</i>]</b>
-     *
-     * @param payType
-     * @param activity 调起支付 所在的 activity
-     * @param payInfo  支付信息 [订单号，支付金额，商品名称，支付服务器回调地址..]
-     *                 <p><i>PayInfo -> price 微信:交易金额默认为人民币交易，接口中参数支付金额单位为【分】，参数值不能带小数。</i></p>
+    /***
+     * 调起 支付 app内处理加签操作，出于安全不建议使用，可以用作demo调试
+     * @param payType  支付类型
+     * @param activity 所在的activity
+     * @param payInfo 支付对象信息[订单号，支付金额，商品名称，支付服务器回调地址..]微信:交易金额默认为人民币交易，接口中参数支付金额单位为【分】，参数值不能带小数。
      * @param listener 支付回调
+     * @return
      */
-    public void onPay(PayType payType, Activity activity, PayInfo payInfo, OnPayListener listener) {
-        currentPayType = payType;
-        if (!isInit) {
-            init(activity);
-        }
+    public PayAgent onPay(PayType payType, Activity activity, PayInfo payInfo, OnPayListener listener) {
         if (null == payInfo) {
             throw new IllegalArgumentException(" payinfo  is null!");
         }
@@ -163,24 +161,18 @@ public class PayAgent {
             default:
                 throw new IllegalArgumentException(" payType is ALIPAY or WXPAY ");
         }
-
+        return instance;
     }
 
-
-    /**
-     * 调起 支付 <b>[ 同步调用<i>即在主（ui）线程调用</i>]</b>
-     *
-     * @param payType
-     * @param activity 调起支付 所在的 activity
-     * @param payInfo  支付信息 [订单号，支付金额，商品名称，支付服务器回调地址..]
-     *                 <p><i>PayInfo -> price 微信:交易金额默认为人民币交易，接口中参数支付金额单位为【分】，参数值不能带小数。</i></p>
+    /***
+     * 调起 支付 服务器加载后，回传加签数据
+     * @param payType  支付类型
+     * @param activity 所在的activity
+     * @param payInfo 服务器加签后的数据 例如：{"appid":"wxb4ba3c02aa476ea1","partnerid":"1305176001","package":"Sign=WXPay","noncestr":"6e778396de67b4a57310651d3302067c","timestamp":1473258151,"prepayid":"wx20160907222231ce5961f6a10963609051","sign":"E0C61AD6F45E26D20B8B4F2B69B4170B"}
      * @param listener 支付回调
+     * @return
      */
-    public void onPay(PayType payType, Activity activity, String payInfo, OnPayListener listener) {
-        currentPayType = payType;
-        if (!isInit) {
-            init(activity);
-        }
+    public PayAgent onPay(PayType payType, Activity activity, String payInfo, OnPayListener listener) {
         if (null == payInfo) {
             throw new IllegalArgumentException(" payinfo  is null!");
         }
@@ -201,16 +193,10 @@ public class PayAgent {
             default:
                 throw new IllegalArgumentException(" payType is ALIPAY or WXPAY ");
         }
-
+        return instance;
     }
 
-    public void onAuth(PayType payType, Activity activity, OnAuthListener listener) {
-        currentPayType = payType;
-        currentPayType = payType;
-
-        if (!isInit) {
-            init(activity);
-        }
+    public PayAgent onAuth(PayType payType, Activity activity, OnAuthListener listener) {
         if (null == activity) {
             throw new IllegalArgumentException(" Activity  is null!");
         }
@@ -227,5 +213,6 @@ public class PayAgent {
             default:
                 throw new IllegalArgumentException(" payType is ALIAUTHV2 ");
         }
+        return instance;
     }
 }

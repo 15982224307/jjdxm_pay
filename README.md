@@ -52,16 +52,20 @@ jjdxm-pay requires at minimum Java 9 or Android 2.3.
 
 ## Proguard ##
 
-根据你的混淆器配置和使用，您可能需要在你的proguard文件内配置以下内容：
-
-	-keep com.dou361.pay.** {
-    *;
-	}
+类库中使用consumerProguardFiles属性，它指定了编译时，库自动引入的混淆规则。也就是说应用打包时候会自动的寻找库里的混淆文件，不需要手工配置了。
 
 
 [AndroidStudio代码混淆注意的问题][minify]
 
 ## Get Started ##
+
+### step1 ###
+需要申请的一些权限已经集成到类库中了,引入依赖，如果主程序项目中有重复的类库，可以用打开注释来移除重复依赖。
+
+	    compile ('com.dou361.pay:jjdxm-pay:1.0.2'){
+	//        exclude group: 'com.dou361.alipay', module: 'jjdxm-alipay'
+	//        exclude group: 'com.dou361.wechat', module: 'jjdxm-wechat'
+	    }
 
 ### 支付参数说明 ###
 PayType:
@@ -96,7 +100,7 @@ OnPayListener：
 	onPaySuccess(); 支付成功
 	onPayFail(String code, String msg); 支付失败，code和msg 均为第三方原样返回
 
-### step1 ###
+### step2 ###
 #### 配置 AndroidManifest ####
 
  	<!-- 微信支付 start -->
@@ -107,7 +111,7 @@ OnPayListener：
         android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
     <!-- 微信支付 end -->
 
-### step2 ###
+### step3 ###
 #### 初始化支付组件 ####
 
 		PayAgent.getInstance()
@@ -129,7 +133,7 @@ OnPayListener：
      */
 	PayAgent initPay(String appId, String partnerId, String privateKey, String appwxId, String mchId,
                             String appKey)
-### step3 ###
+### step4 ###
 #### 两种支付方式 ####
 
 1.app内对订单信息加签，然后调起支付，这种方式需要传递上面六个参数appId，partnerId，privateKey，appwxId，mchId，appKey，可以用作demo调试使用

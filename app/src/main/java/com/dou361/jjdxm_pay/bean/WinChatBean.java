@@ -1,6 +1,6 @@
 package com.dou361.jjdxm_pay.bean;
 
-import com.google.gson.annotations.SerializedName;
+import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * ========================================
@@ -36,7 +36,7 @@ public class WinChatBean {
 
     private String appid;
     private String partnerid;
-    @SerializedName("package")
+    @JSONField(name = "package")
     private String packageX;
     private String noncestr;
     private int timestamp;

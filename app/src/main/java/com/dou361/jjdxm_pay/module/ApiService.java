@@ -30,10 +30,10 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     /**
-     * 直播相关接口
+     * 微信下单接口
      */
     @GET("/pub_v2/app/app_pay.php")
-    Call<String> live(@Query("plat") String params);
+    Call<String> form(@Query("plat") String params);
 
 
 }

@@ -43,7 +43,7 @@ public class ApiServiceUtils {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService mApiServicePresenter = retrofit.create(ApiService.class);
-        Call<String> call = mApiServicePresenter.live("android");
+        Call<String> call = mApiServicePresenter.form("android");
         call.enqueue(cb);
 //        try {
 //            response = call.execute();

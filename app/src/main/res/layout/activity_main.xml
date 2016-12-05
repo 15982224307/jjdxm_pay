@@ -7,20 +7,33 @@
               tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/weichatpay"
+        android:id="@+id/btn_wechat_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="微信 支付"/>
+        android:text="微信下单支付"/>
 
     <Button
-        android:id="@+id/payV2"
+        android:id="@+id/btn_wechat_order_pay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="支付宝支付"
+        android:text="微信订单支付"/>
+
+    <Button
+        android:id="@+id/btn_ali_pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="支付宝下单支付"
         tools:ignore="HardcodedText"/>
 
     <Button
-        android:id="@+id/authV2"
+        android:id="@+id/btn_ali_order_pay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="支付宝订单支付"
+        tools:ignore="HardcodedText"/>
+
+    <Button
+        android:id="@+id/btn_ali_auth"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="支付宝授权"

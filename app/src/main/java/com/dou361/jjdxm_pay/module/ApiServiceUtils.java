@@ -45,14 +45,6 @@ public class ApiServiceUtils {
         ApiService mApiServicePresenter = retrofit.create(ApiService.class);
         Call<String> call = mApiServicePresenter.form("android");
         call.enqueue(cb);
-//        try {
-//            response = call.execute();
-//
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return null;
     }
 
 }

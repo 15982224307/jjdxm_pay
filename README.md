@@ -42,6 +42,7 @@ or Gradle:
 
 
 历史版本：
+	compile 'com.dou361.pay:jjdxm-pay:1.0.2'
 	compile 'com.dou361.pay:jjdxm-pay:1.0.1'  支付宝2.0
 	compile 'com.dou361.pay:jjdxm-pay:1.0.0'
 

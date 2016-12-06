@@ -9,7 +9,7 @@ ext {
     jjdxm_groupId = 'com.dou361.pay'
     jjdxm_artifactId = 'jjdxm-pay'
 
-    jjdxm_libraryVersion = '1.0.1'
+    jjdxm_libraryVersion = '1.0.2'
     jjdxm_libraryName = 'jjdxm-pay'
     jjdxm_libraryDescription = 'this is a pay library of the application'
 

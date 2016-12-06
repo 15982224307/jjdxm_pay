@@ -51,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             break;
             case R.id.btn_wechat_order_pay:
-                winchatPay();
+//                winchatPay();
+                orderPay(PayType.ALIPAY, "{\"appid\":\"wxef413ffbd08cdc67\",\"partnerid\":\"1401662702\",\"prepayid\":\"wx20161206200715b62d1798960172430194\",\"timestamp\":1481026033,\"noncestr\":\"rx4d4u1e8s1bcgb2b624l0el3w344ve6\",\"package\":\"Sign=WXPay\",\"sign\":\"035E533009BBE38368937E0ED6649E1E\"}\n");
                 break;
             case R.id.btn_ali_pay: {
                 PayInfo payInfo = new PayInfo();

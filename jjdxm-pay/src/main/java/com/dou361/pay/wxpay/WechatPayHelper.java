@@ -52,9 +52,9 @@ public class WechatPayHelper {
                 req.appId = json.getString("appid");
                 req.partnerId = json.getString("partnerid");
                 req.prepayId = json.getString("prepayid");
+                req.packageValue = json.getString("package");
                 req.nonceStr = json.getString("noncestr");
                 req.timeStamp = json.getString("timestamp");
-                req.packageValue = json.getString("package");
                 req.sign = json.getString("sign");
                 req.extData = "app data";
             } else {

@@ -72,8 +72,8 @@ jjdxm-pay requires at minimum Java 9 or Android 2.3.
 PayType:
 支付的支付方式，目前支持：
 
-	PayAgent.PayType.WECHATPAY（微信支付）；
-	PayAgent.PayType.ALIPAY（支付宝）；
+	PayType.WECHATPAY（微信支付）；
+	PayType.ALIPAY（支付宝）；
 
 支付使用的对象，支付宝的以下参数都是需要传的，微信只有price和orderNo是必须传的。支付宝中价格price可以允许传小数点例如：0.01单位为元；微信中价格price不能有小数点，例如1单位为分。
 
@@ -222,6 +222,7 @@ OnPayListener：
 开发者调用接口前需要先生成RSA密钥，RSA密钥包含应用私钥(APP_PRIVATE_KEY)、应用公钥(APP_PUBLIC_KEY）。生成密钥后在开放平台管理中心进行密钥配置，配置完成后可以获取支付宝公钥(ALIPAY_PUBLIC_KEY)。详细步骤请参考《配置应用环境》。
 
 ## ChangeLog ##
+2016.12.06 1.0.2版本打包，加入加签订单支付功能，混淆规则
 
 ## About Author ##
 

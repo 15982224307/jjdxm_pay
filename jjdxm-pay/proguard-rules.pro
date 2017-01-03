@@ -19,7 +19,7 @@
 -keep class com.tencent.mm.sdk.** {
    *;
 }
--libraryjars libs/alipaySDK-20150602.jar
+#-libraryjars libs/alipaySDK-20150602.jar
 
 -keep class com.alipay.android.app.IAlixPay{*;}
 -keep class com.alipay.android.app.IAlixPay$Stub{*;}
